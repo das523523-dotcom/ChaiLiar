@@ -1,6 +1,5 @@
 // ============================================================
-// CHAI-LIAR v7.1 - SECURE & PRODUCTION-READY
-// Fully refactored: PreparedStatement, thread-safe, MVC-like
+// CHAI-LIAR v7.1 - SECURE & PRODUCTION-READY (FULLY COMPILABLE)
 // ============================================================
 
 import javax.swing.*;
@@ -23,8 +22,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Timer;
 
+// ====================================================================
+// MAIN CLASS
+// ====================================================================
 public class ChaiLiarMain extends JFrame {
-    // ------------------ UI Components ------------------
     public DashboardPanel dashboard;
     private MenuPanel menu;
     private OrderPanel orders;
@@ -42,12 +43,10 @@ public class ChaiLiarMain extends JFrame {
     public HappyHourManager happyHour;
     private JLabel userStatusLabel;
 
-    // ------------------ Constants ------------------
     public static final String DATA_DIR = "data";
     public static final String BACKUP_DIR = "backup_daily";
     public static final String ARCHIVE_DIR = DATA_DIR + "/archive";
 
-    // ------------------ DB Connection (thread-safe) ------------------
     private static Connection dbConnection;
     private static final Logger LOGGER = Logger.getLogger(ChaiLiarMain.class.getName());
 
@@ -80,7 +79,6 @@ public class ChaiLiarMain extends JFrame {
         }
     }
 
-    // ------------------ Constructor ------------------
     public ChaiLiarMain() {
         try {
             Files.createDirectories(Paths.get(DATA_DIR));
@@ -98,7 +96,6 @@ public class ChaiLiarMain extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout(10, 10));
 
-        // Initialize managers
         logPanel = new TransactionLogPanel();
         persistence = new PersistenceManager();
         feedback = new FeedbackSystem();
@@ -119,7 +116,6 @@ public class ChaiLiarMain extends JFrame {
 
         honesty = new HonestyPanel(dashboard, logPanel, userManager, reportManager, securityManager, inventory);
 
-        // Layout
         add(dashboard, BorderLayout.WEST);
         JPanel centerPanel = new JPanel(new BorderLayout());
         centerPanel.add(menu, BorderLayout.CENTER);
@@ -167,7 +163,6 @@ public class ChaiLiarMain extends JFrame {
         });
     }
 
-    // ------------------ Backup Methods ------------------
     private void performDailyBackup() {
         String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         File backupFile = new File(BACKUP_DIR + "/backup_" + today + ".db");
@@ -207,7 +202,6 @@ public class ChaiLiarMain extends JFrame {
         if (orders != null) orders.pushUndo(undo);
     }
 
-    // ------------------ Login Dialog ------------------
     private boolean showLoginDialog() {
         JDialog loginDialog = new JDialog(this, "Login - CHAI-LIAR", true);
         loginDialog.setLayout(new BorderLayout());
@@ -295,9 +289,9 @@ public class ChaiLiarMain extends JFrame {
     }
 }
 
-// ============================================================
-// UTILITY CLASSES (Password hashing, String repeat)
-// ============================================================
+// ====================================================================
+// UTILITY CLASSES
+// ====================================================================
 class PasswordUtil {
     private static final Logger LOGGER = Logger.getLogger(PasswordUtil.class.getName());
 
@@ -330,9 +324,9 @@ class StringUtils {
     }
 }
 
-// ============================================================
+// ====================================================================
 // MODEL: User
-// ============================================================
+// ====================================================================
 class User implements Serializable {
     private static final long serialVersionUID = 2L;
     private String username;
@@ -381,9 +375,9 @@ class User implements Serializable {
     }
 }
 
-// ============================================================
+// ====================================================================
 // DB MANAGER: UserManager
-// ============================================================
+// ====================================================================
 class UserManager {
     private Map<String, User> users;
     private User currentUser;
@@ -462,9 +456,9 @@ class UserManager {
     }
 }
 
-// ============================================================
-// SECURITY MANAGER (Audit log)
-// ============================================================
+// ====================================================================
+// SECURITY MANAGER
+// ====================================================================
 class AppSecurityManager {
     private List<String> auditLog;
     private File auditFile;
@@ -511,9 +505,9 @@ class AppSecurityManager {
     }
 }
 
-// ============================================================
+// ====================================================================
 // MODEL: MenuItem
-// ============================================================
+// ====================================================================
 class MenuItem implements Serializable {
     private static final long serialVersionUID = 1L;
     private String name;
@@ -532,7 +526,6 @@ class MenuItem implements Serializable {
         this.addedBy = addedBy;
     }
 
-    // Getters and setters...
     public String getName() { return name; }
     public int getPrice() { return price; }
     public String getCategory() { return category; }
@@ -549,9 +542,9 @@ class MenuItem implements Serializable {
     }
 }
 
-// ============================================================
+// ====================================================================
 // DB MANAGER: HappyHourManager
-// ============================================================
+// ====================================================================
 class HappyHourManager {
     private LocalTime startTime;
     private LocalTime endTime;
@@ -628,9 +621,9 @@ class HappyHourManager {
     }
 }
 
-// ============================================================
+// ====================================================================
 // DB MANAGER: SalesReportManager
-// ============================================================
+// ====================================================================
 class SalesReportManager {
     private TreeMap<LocalDateTime, List<SaleTransaction>> salesByTime;
     private Map<String, List<SaleTransaction>> salesmanSales;
@@ -840,9 +833,9 @@ class SalesReportManager {
     }
 }
 
-// ============================================================
+// ====================================================================
 // MODEL: SaleTransaction
-// ============================================================
+// ====================================================================
 class SaleTransaction {
     private String itemName;
     private int originalPrice;
@@ -871,9 +864,9 @@ class SaleTransaction {
     public boolean isFree() { return isFree; }
 }
 
-// ============================================================
+// ====================================================================
 // MODEL: FreeItemLog
-// ============================================================
+// ====================================================================
 class FreeItemLog {
     private String itemName;
     private String salesmanId;
@@ -900,9 +893,9 @@ class FreeItemLog {
     }
 }
 
-// ============================================================
-// DB MANAGER: PersistenceManager (app state)
-// ============================================================
+// ====================================================================
+// DB MANAGER: PersistenceManager
+// ====================================================================
 class PersistenceManager {
     private static final Logger LOGGER = Logger.getLogger(PersistenceManager.class.getName());
 
@@ -937,9 +930,9 @@ class PersistenceManager {
     }
 }
 
-// ============================================================
+// ====================================================================
 // UI: DashboardPanel
-// ============================================================
+// ====================================================================
 class DashboardPanel extends JPanel {
     private JLabel salesLabel;
     private int totalSales;
@@ -1016,9 +1009,9 @@ class DashboardPanel extends JPanel {
     public int getHonestyScore() { return honestyScore; }
 }
 
-// ============================================================
-// UI: MenuPanel (with Trie and DB operations using PreparedStatement)
-// ============================================================
+// ====================================================================
+// UI: MenuPanel (with Trie and DB)
+// ====================================================================
 class MenuPanel extends JPanel {
     private DashboardPanel dashboard;
     private TransactionLogPanel log;
@@ -1427,9 +1420,9 @@ class MenuPanel extends JPanel {
     }
 }
 
-// ============================================================
-// UI: SalesmanPanel (unchanged except for logging)
-// ============================================================
+// ====================================================================
+// UI: SalesmanPanel (FULL IMPLEMENTATION)
+// ====================================================================
 class SalesmanPanel extends JPanel {
     private DefaultListModel<Salesman> salesmanModel;
     private JList<Salesman> salesmanList;
@@ -1487,22 +1480,163 @@ class SalesmanPanel extends JPanel {
         add(buttonPanel, BorderLayout.SOUTH);
     }
 
-    // ... (all methods identical to original, but with added logging where appropriate)
-    // For brevity, I'm omitting the full body of this class; it remains unchanged
-    // except that any catch blocks now use LOGGER.log and show user dialogs.
-    // In practice, you would keep the same logic.
-    // (The full class is too long to repeat; the changes are only in exception handling.)
-    // I will include the rest of the class methods in the final answer, but here I'll
-    // leave a placeholder. The actual full code file will include everything.
-    // For the sake of this response, I'll assume the methods are as before.
-    // (They are all unchanged in logic.)
-    // ...
-    // (Omitted for space, but will be in the full file)
+    private void addSalesman() {
+        String name = JOptionPane.showInputDialog(this, "Enter Salesman Name:");
+        if (name != null && !name.trim().isEmpty()) {
+            Salesman newSalesman = new Salesman(name);
+            salesmanModel.addElement(newSalesman);
+            rebuildHeap();
+            updateLeaderboard();
+        }
+    }
+
+    public void recordSaleById(String salesmanId, int amount) {
+        for (int i = 0; i < salesmanModel.size(); i++) {
+            Salesman s = salesmanModel.get(i);
+            if (s.id.equals(salesmanId)) {
+                s.addSale(amount);
+                rebuildHeap();
+                salesmanList.repaint();
+                updateLeaderboard();
+                return;
+            }
+        }
+        Salesman newSalesman = new Salesman("Unknown", salesmanId);
+        newSalesman.addSale(amount);
+        salesmanModel.addElement(newSalesman);
+        rebuildHeap();
+        updateLeaderboard();
+    }
+
+    public void sortBySales() {
+        List<Salesman> list = new ArrayList<>();
+        for (int i = 0; i < salesmanModel.size(); i++) list.add(salesmanModel.get(i));
+        list.sort((a, b) -> Integer.compare(b.totalSales, a.totalSales));
+        salesmanModel.clear();
+        for (Salesman s : list) salesmanModel.addElement(s);
+        rebuildHeap();
+        updateLeaderboard();
+    }
+
+    private void rebuildHeap() {
+        topSalesmenHeap.clear();
+        for (int i = 0; i < salesmanModel.size(); i++) {
+            topSalesmenHeap.offer(salesmanModel.get(i));
+        }
+    }
+
+    private void updateLeaderboard() {
+        List<Salesman> list = new ArrayList<>();
+        for (int i = 0; i < salesmanModel.size(); i++) list.add(salesmanModel.get(i));
+        leaderboardPanel.updateLeaderboard(list);
+    }
+
+    private void showTopSalesmen() {
+        StringBuilder sb = new StringBuilder("🏆 Top " + TOP_N + " Salesmen\n\n");
+        PriorityQueue<Salesman> temp = new PriorityQueue<>(topSalesmenHeap);
+        for (int i = 0; i < TOP_N && !temp.isEmpty(); i++) {
+            Salesman s = temp.poll();
+            sb.append(s.name).append(" (ID: ").append(s.id.substring(0, Math.min(8, s.id.length()))).append(")\n");
+            sb.append("   Total Sales: Rs.").append(s.totalSales).append("\n\n");
+        }
+        JTextArea ta = new JTextArea(sb.toString());
+        ta.setEditable(false);
+        JOptionPane.showMessageDialog(this, ta, "Leaderboard", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    private void closeShift() {
+        User current = userManager.getCurrentUser();
+        if (current == null) return;
+        String salesmanId;
+        if (current.getRole().equals("SALESMAN")) {
+            salesmanId = current.getSalesmanId();
+        } else {
+            String input = JOptionPane.showInputDialog(this, "Enter salesman ID for shift summary:");
+            if (input == null || input.trim().isEmpty()) return;
+            salesmanId = input.trim();
+        }
+
+        LocalDateTime since = lastShiftClose.getOrDefault(salesmanId, LocalDateTime.MIN);
+        NavigableMap<LocalDateTime, List<SaleTransaction>> after = reportManager.getSalesByTimeRange(since, true);
+        List<SaleTransaction> shiftSales = new ArrayList<>();
+        for (List<SaleTransaction> list : after.values()) {
+            for (SaleTransaction t : list) {
+                if (t.getSalesmanId().equals(salesmanId)) shiftSales.add(t);
+            }
+        }
+
+        int totalRevenue = shiftSales.stream().mapToInt(SaleTransaction::getFinalPrice).sum();
+        long itemCount = shiftSales.size();
+        long freeCount = shiftSales.stream().filter(SaleTransaction::isFree).count();
+
+        StringBuilder summary = new StringBuilder();
+        summary.append("Shift Summary for Salesman ").append(salesmanId).append("\n");
+        summary.append("-----------------------------------\n");
+        summary.append("Period: ").append(since == LocalDateTime.MIN ? "Beginning" : since.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
+                .append(" to now\n");
+        summary.append("Total Revenue: Rs. ").append(totalRevenue).append("\n");
+        summary.append("Total Items Sold: ").append(itemCount).append("\n");
+        summary.append("Free Items Given: ").append(freeCount).append("\n");
+
+        JOptionPane.showMessageDialog(this, summary.toString(), "Shift Summary", JOptionPane.INFORMATION_MESSAGE);
+        lastShiftClose.put(salesmanId, LocalDateTime.now());
+    }
+
+    private void showFreeLog() {
+        List<FreeItemLog> logs = reportManager.getFreeLogs();
+        StringBuilder sb = new StringBuilder("FREE ITEM LOG\n");
+        sb.append(StringUtils.repeat("=", 60)).append("\n\n");
+        for (FreeItemLog log : logs) sb.append(log.toString()).append("\n");
+        JTextArea textArea = new JTextArea(sb.toString());
+        textArea.setEditable(false);
+        textArea.setFont(new Font("Monospaced", Font.PLAIN, 10));
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        scrollPane.setPreferredSize(new Dimension(800, 500));
+        JOptionPane.showMessageDialog(this, scrollPane, "Free Item Audit Log", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    private void showSalesReport() {
+        Map<String, Integer> salesmanTotals = reportManager.getSalesmanTotal();
+        StringBuilder report = new StringBuilder("SALESMAN PERFORMANCE REPORT\n");
+        report.append(StringUtils.repeat("=", 50)).append("\n\n");
+        for (int i = 0; i < salesmanModel.size(); i++) {
+            Salesman s = salesmanModel.get(i);
+            int totalSales = salesmanTotals.getOrDefault(s.id, 0);
+            int numberOfSales = reportManager.getSalesBySalesmanId(s.id).size();
+            report.append(String.format("%s (ID: %s)\n", s.name, s.id));
+            report.append(String.format("  Total Revenue: Rs.%,d\n", totalSales));
+            report.append(String.format("  Number of Sales: %d\n", numberOfSales));
+            report.append(String.format("  Average Sale: Rs.%,.2f\n",
+                    numberOfSales == 0 ? 0 : totalSales / (double) numberOfSales));
+            report.append("\n");
+        }
+        JTextArea textArea = new JTextArea(report.toString());
+        textArea.setEditable(false);
+        textArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        scrollPane.setPreferredSize(new Dimension(500, 400));
+        JOptionPane.showMessageDialog(this, scrollPane, "Salesman Report",
+                JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    private void showAuditLog() {
+        List<String> auditLog = securityManager.getAuditLog();
+        StringBuilder logText = new StringBuilder("AUDIT LOG\n");
+        logText.append(StringUtils.repeat("=", 50)).append("\n\n");
+        for (String entry : auditLog) logText.append(entry).append("\n");
+        JTextArea textArea = new JTextArea(logText.toString());
+        textArea.setEditable(false);
+        textArea.setFont(new Font("Monospaced", Font.PLAIN, 10));
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        scrollPane.setPreferredSize(new Dimension(800, 500));
+        JOptionPane.showMessageDialog(this, scrollPane, "Audit Log",
+                JOptionPane.INFORMATION_MESSAGE);
+    }
 }
 
-// ============================================================
+// ====================================================================
 // MODEL: Salesman
-// ============================================================
+// ====================================================================
 class Salesman {
     String id;
     String name;
@@ -1528,9 +1662,9 @@ class Salesman {
     }
 }
 
-// ============================================================
-// UI: InventoryPanel (with PreparedStatement)
-// ============================================================
+// ====================================================================
+// UI: InventoryPanel
+// ====================================================================
 class InventoryPanel extends JPanel {
     private Map<String, Integer> stock;
     private DefaultListModel<String> stockModel;
@@ -1705,7 +1839,6 @@ class InventoryPanel extends JPanel {
                     }
                 } catch (NumberFormatException ex) {
                     LOGGER.log(Level.WARNING, "Invalid bulk restock input", ex);
-                    // skip and continue
                 }
             }
             saveInventoryToDB();
@@ -1734,9 +1867,9 @@ class InventoryPanel extends JPanel {
     }
 }
 
-// ============================================================
+// ====================================================================
 // UI: OrderPanel
-// ============================================================
+// ====================================================================
 class OrderPanel extends JPanel {
     private DefaultListModel<String> orderModel;
     private TransactionLogPanel log;
@@ -1790,9 +1923,9 @@ class OrderPanel extends JPanel {
     }
 }
 
-// ============================================================
+// ====================================================================
 // UI: HonestyPanel
-// ============================================================
+// ====================================================================
 class HonestyPanel extends JPanel {
     private DashboardPanel dashboard;
     private TransactionLogPanel log;
@@ -1900,9 +2033,9 @@ class HonestyPanel extends JPanel {
     }
 }
 
-// ============================================================
+// ====================================================================
 // UI: LeaderboardPanel
-// ============================================================
+// ====================================================================
 class LeaderboardPanel extends JPanel {
     private DefaultListModel<String> leaderboardModel;
     private JList<String> leaderboardList;
@@ -1924,12 +2057,13 @@ class LeaderboardPanel extends JPanel {
     }
 }
 
-// ============================================================
-// UI: ThemeManager
-// ============================================================
+// ====================================================================
+// UI: ThemeManager (with LOGGER added)
+// ====================================================================
 class ThemeManager {
     private JFrame frame;
     private boolean isDark = false;
+    private static final Logger LOGGER = Logger.getLogger(ThemeManager.class.getName());
 
     public ThemeManager(JFrame frame) {
         this.frame = frame;
@@ -2002,9 +2136,9 @@ class ThemeManager {
     }
 }
 
-// ============================================================
+// ====================================================================
 // UI: TransactionLogPanel
-// ============================================================
+// ====================================================================
 class TransactionLogPanel extends JPanel {
     private DefaultListModel<String> logModel;
 
@@ -2024,12 +2158,11 @@ class TransactionLogPanel extends JPanel {
     }
 }
 
-// ============================================================
+// ====================================================================
 // FeedbackSystem
-// ============================================================
+// ====================================================================
 class FeedbackSystem {
     private Timer timer;
-    private static final Logger LOGGER = Logger.getLogger(FeedbackSystem.class.getName());
 
     public void attachToDashboard(DashboardPanel dashboard, TransactionLogPanel log) {
         timer = new Timer(20000, e -> {
